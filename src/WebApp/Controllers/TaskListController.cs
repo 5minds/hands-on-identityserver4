@@ -2,7 +2,9 @@
 {
   using System;
   using System.Threading.Tasks;
+  using Microsoft.AspNetCore.Authorization;
   using Microsoft.AspNetCore.Mvc;
+  using Microsoft.Extensions.Logging;
 
   [ApiController]
   [Route("api/tasks")]
@@ -10,13 +12,16 @@
   {
     private readonly TaskList taskList;
     private readonly UserResolver userResolver;
+    private readonly ILogger logger;
 
     public TaskListController(
       TaskList taskList,
-      UserResolver userResolver)
+      UserResolver userResolver,
+      ILogger<TaskListController> logger)
     {
       this.taskList = taskList;
       this.userResolver = userResolver;
+      this.logger = logger;
     }
 
     [HttpGet("get-all")]
@@ -25,6 +30,7 @@
       return this.taskList;
     }
 
+    [Authorize(Policy = TaskAuthorizationOptions.PolicyName)]
     [HttpPost("add-new")]
     public async Task<IActionResult> AddNew([FromBody] NewTaskRequestPayload payload)
     {
@@ -39,6 +45,7 @@
       return this.Ok(newTaskItem);
     }
 
+    [Authorize(Policy = TaskAuthorizationOptions.PolicyName)]
     [HttpPut("{taskId}/mark-as-completed")]
     public async Task<IActionResult> MarkAsCompleted([FromRoute] Guid taskId)
     {
@@ -50,6 +57,7 @@
       return this.Ok(matchingTaskItem);
     }
 
+    [Authorize(Policy = TaskAuthorizationOptions.PolicyName)]
     [HttpPut("{taskId}/mark-as-open")]
     public async Task<IActionResult> MarkAsOpen([FromRoute] Guid taskId)
     {
