@@ -59,7 +59,6 @@ Das Backend basiert auf aspnetcore 3.1 und stellt ein rudimentäres Backend ohne
 * Die Authentifizierungsschemata und Autorisierungsrichtlinien sind in der Request-Pipeline zu konfigurieren.
 * Die Policies können nach Deklaration über einen Filter oder auch attributbasiert eingefordert werden.
 * Als Library empfehlen wir `IdentityServer4.AccessTokenValidation`
-* Der `UserResolver` wird Aufrufe an das Discovery-Dokument und den UserInfo-Endpoint machen müssen. Dafür gibt es in oben genannter Library Extension Methods für den `HttpClient`.
 
 # Seid ihr früher fertig?
 
